@@ -26,7 +26,7 @@ using Il2CppAssets.Scripts.Models.Towers.Weapons.Behaviors;
 using Il2CppAssets.Scripts.Simulation.Powers;
 using static Il2CppAssets.Scripts.Utils.ObjectCache;
 using static MelonLoader.MelonLogger;
-
+using Il2CppNinjaKiwi.LiNK.Lobbies;
 
 [assembly: MelonInfo(typeof(CardMonkeyMod), ModHelperData.Name, ModHelperData.Version, ModHelperData.RepoOwner)]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
@@ -71,21 +71,9 @@ namespace TestMonkey
 
         }
 
-
-    }
-
-
-    /// <summary>
-    /// Checks for our specific tower and only applies if any path upgraded (removes all towers in range)
-    /// </summary>
-    [HarmonyPatch(typeof(UnityToSimulation), nameof(UnityToSimulation.UpgradeTower_Impl))]
-    internal static class UnityToSimulation_UpgradeTower_Impl
-    {
-        [HarmonyPostfix]
-        private static void Postfix(UnityToSimulation __instance, ObjectId id, int pathIndex, int inputId)
+        public override void OnTowerUpgraded(Tower tower, string upgradeName, TowerModel newBaseTowerModel)
         {
-            var towerManager = __instance.simulation.towerManager;
-            var tower = towerManager.GetTowerById(id);
+
             //If our monkey was upgraded through any path
             if (tower.rootModel.Cast<TowerModel>().name.ToLower().Contains("testmonkey"))
             {
@@ -93,20 +81,25 @@ namespace TestMonkey
                 foreach (Tower theTower in inRange)
                 {
                     MelonLogger.Msg("Tower in Range: " + theTower.towerModel.name);
-                    //Call our Static modify weapon function
 
                     //Outputs 1 always
                     MelonLogger.Msg("We have " + tower.rootModel.Cast<TowerModel>().GetBehavior<AttackModel>().weapons.Count + " weapons before upgrade");
                     TowerModel newModel = WeaponHelper.ModifyWeapon(theTower, tower);
                     tower.UpdateRootModel(newModel);
-                   // tower.UpdateRootModel(tower.rootModel.Cast<TowerModel>());
+                    // tower.UpdateRootModel(tower.rootModel.Cast<TowerModel>());
                     MelonLogger.Msg("We added another attack and now have " + tower.rootModel.Cast<TowerModel>().GetBehavior<AttackModel>().weapons.Count);
-                    theTower.Destroy();
+                   
+                }
+
+                for(int i = inRange.Count - 1; i >= 0; i--)
+                {
+                    inRange[i].Destroy();
                 }
             }
         }
-    }
 
+
+    }
 
     public static class WeaponHelper
     {
