@@ -1,0 +1,22 @@
+﻿using Il2CppAssets.Scripts.Models.Towers;
+using BTD_Mod_Helper.Api.Towers;
+using BTD_Mod_Helper.Extensions;
+
+namespace TestMonkey.Upgrades.BottomPath
+{
+    public class MarkedCards : ModUpgrade<TestMonkey>
+    {
+        public override int Path => BOTTOM;
+        public override int Tier => 4;
+        public override int Cost => 2500;
+
+        public override string Description => "Attacks extra fast permanently and with bigger range";
+
+        public override string Portrait => "CardMonkey-Portrait";
+
+        public override void ApplyUpgrade(TowerModel tower)
+        {
+           
+        }
+    }
+}
