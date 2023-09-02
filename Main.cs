@@ -45,11 +45,9 @@ namespace TestMonkey
                 {
                     MelonLogger.Msg("Tower in Range: " + theTower.towerModel.name);
 
-                    //Outputs 1 always
                     MelonLogger.Msg("We have " + tower.rootModel.Cast<TowerModel>().GetBehavior<AttackModel>().weapons.Count + " weapons before upgrade");
                     TowerModel newModel = WeaponHelper.ModifyWeapon(theTower, tower);
                     tower.UpdateRootModel(newModel);
-                    // tower.UpdateRootModel(tower.rootModel.Cast<TowerModel>());
                     MelonLogger.Msg("We added another attack and now have " + tower.rootModel.Cast<TowerModel>().GetBehavior<AttackModel>().weapons.Count);
                    
                 }
