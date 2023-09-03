@@ -71,13 +71,13 @@ namespace TestMonkey
             {
                 TowerModel giveToTowerModel = giveToTower.Duplicate();//giveToTower.rootModel.Cast<TowerModel>().Duplicate();
                 AttackModel takeFromAttackModel = takeFromTower.rootModel.Cast<TowerModel>().GetAttackModel();
-                AttackModel giveToAttackModel = giveToTowerModel.GetBehavior<AttackModel>().Duplicate();
-                giveToTowerModel.RemoveBehavior<AttackModel>();
+               // AttackModel giveToAttackModel = giveToTowerModel.GetBehavior<AttackModel>().Duplicate();
+               // giveToTowerModel.RemoveBehavior<AttackModel>();
                 //Duplicate the WeaponModel and add it to giveToTower weapons
                 foreach (WeaponModel WP in takeFromAttackModel.weapons)
-                    giveToAttackModel.AddWeapon(WP.Duplicate());
+                    giveToTowerModel.GetBehavior<AttackModel>().AddWeapon(WP.Duplicate());
 
-                giveToTowerModel.AddBehavior(giveToAttackModel);
+                //giveToTowerModel.AddBehavior(giveToAttackModel);
                 return giveToTowerModel;
 
             }
